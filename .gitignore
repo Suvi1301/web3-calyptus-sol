@@ -1,0 +1,7 @@
+*/node_modules/*
+*.anchor
+*.DS_Store
+anchor-solana-nft/target
+**/*.rs.bk
+anchor-solana-nft/test-ledger
+anchor-solana-nft/.yarn
