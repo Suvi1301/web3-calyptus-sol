@@ -5,3 +5,6 @@ anchor-solana-nft/target
 **/*.rs.bk
 anchor-solana-nft/test-ledger
 anchor-solana-nft/.yarn
+todo-list-app/target
+todo-list-app/test-ledger
+todo-list-app/.yarn
