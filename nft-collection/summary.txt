@@ -1,0 +1,19 @@
+Here we deploy a connection of NFTs using the sugar-cli on Candy Machine
+`sugar-launch` with a assets directory that contains the assets of the NFTs.
+Then set up the config fot the candy machine.
+
+This was what I did:
+Found 10 file pairs in "assets". Is this how many NFTs you will have in your candy machine? · yes
+✔ Found symbol "NB" in your metadata file. Is this value correct? · yes
+✔ What is the seller fee basis points? · 1000
+✔ Do you want to use a sequential mint index generation? We recommend you choose no. · no
+✔ How many creator wallets do you have? (max limit of 4) · 1
+✔ Enter creator wallet address #1 · 66kiWgXW3f44pjQetQ2pUqTS5yYCS6msu8CyQb8bGuKg
+✔ Enter royalty percentage share for creator #1 (e.g., 70). Total shares must add to 100. · 100
+✔ Which extra features do you want to use? (use [SPACEBAR] to select options you want and hit [ENTER] when done) · Hidden Settings
+✔ What is the prefix name for your hidden settings mints? The mint index will be appended at the end of the name. · .
+
+`sugar-upload` which uploads the assets to the Candy Machine and gives a URL for our candy machine:
+ https://www.solaneyes.com/address/CQhKvPBgcvHMghXj6pTAaSd74cqSQmSowCd32ZApvpf7?cluster=devnet
+
+ `sugar-mint` allows to mint these NFTs into the Candy Machine Wallet which we can link to our Phantom Wallet.
