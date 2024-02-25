@@ -74,12 +74,12 @@ dependencies {
     implementation("com.github.metaplex-foundation:SolanaKT:2.1.0")
 
 
-    kapt("com.google.dagger:hilt-compiler:2.47")
-    implementation("com.google.dagger:dagger:2.47")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+    implementation("com.google.dagger:dagger:2.49")
     kapt("com.google.dagger:dagger-compiler:2.47")
-    implementation("com.google.dagger:hilt-android:2.47")
-    kapt("com.google.dagger:hilt-android:2.47")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android:2.49")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     implementation("androidx.room:room-ktx:2.5.2")
     implementation("androidx.room:room-runtime:2.5.2")
