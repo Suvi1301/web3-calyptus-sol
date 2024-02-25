@@ -17,11 +17,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
+import android.net.Uri
+import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val activityResultSender = ActivityResultSender(this)
+
         setContent {
             WaffleTheme {
                 // A surface container using the 'background' color from the theme
@@ -32,7 +37,13 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier=Modifier.padding(16.dp),
                     ) {
-                        WalletConnectButton(modifier = Modifier.align(Alignment.End))
+                        WalletConnectButton(
+                            identityUri = Uri.parse(application.getString((R.string.id_url))),
+                            iconUri = Uri.parse(application.getString(R.string.id_favicon)),
+                            identityName = application.getString(R.string.app_name),
+                            activityResultSender = activityResultSender,
+                            modifier = Modifier.align(Alignment.End)
+                        )
                     }
                 }
             }
