@@ -86,5 +86,8 @@ dependencies {
     kapt("androidx.room:room-compiler:2.5.2")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.github.metaplex-foundation:metaplex-android:1.4.1")  {
+        exclude("com.github.metaplex-foundation.kborsh", "kborsh-android")
+    }
 
 }
