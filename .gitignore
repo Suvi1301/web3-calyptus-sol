@@ -24,3 +24,7 @@ android-dapp/captures
 android-dapp/.externalNativeBuild
 android-dapp/.cxx
 android-dapp/local.properties
+
+waffle-maker/target
+waffle-maker/test-ledger
+waffle-maker/.yarn
