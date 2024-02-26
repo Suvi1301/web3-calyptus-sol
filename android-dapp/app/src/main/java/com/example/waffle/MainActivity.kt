@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
 import android.net.Uri
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
+import androidx.compose.foundation.layout.fillMaxSize
+import com.example.waffle.composables.WaffleCard
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
                             activityResultSender = activityResultSender,
                             modifier = Modifier.align(Alignment.End)
                         )
+                        WaffleCard(modifier = Modifier.fillMaxSize())
                     }
                 }
             }
