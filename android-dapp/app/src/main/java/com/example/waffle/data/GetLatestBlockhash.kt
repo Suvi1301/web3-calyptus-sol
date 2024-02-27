@@ -4,7 +4,6 @@ import com.solana.api.Api
 import com.solana.networking.Commitment
 import com.solana.networking.RpcRequest
 import com.solana.networking.makeRequestResult
-import com.solana.networking.serialization.serializers.solana.SolanaResponseSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer

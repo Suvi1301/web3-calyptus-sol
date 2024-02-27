@@ -19,7 +19,7 @@ class PrefsDataStoreRepository @Inject constructor(
     val publicKeyFlow: Flow<String> =
         context.dataStore.data
             .map { preferences ->
-                preferences[accountLabelPref] ?: ""
+                preferences[pubkeyPref] ?: ""
             }
 
     val accountLabelFlow: Flow<String> =
