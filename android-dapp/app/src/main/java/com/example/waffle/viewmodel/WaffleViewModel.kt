@@ -1,21 +1,28 @@
 package com.example.waffle.viewmodel
 
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.waffle.usecase.Connected
 import com.example.waffle.usecase.NotConnected
+import com.example.waffle.usecase.WaffleUseCase
 import com.example.waffle.usecase.WalletConnectionUseCase
+import com.solana.Solana
+import com.solana.core.PublicKey
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import com.solana.mobilewalletadapter.clientlib.MobileWalletAdapter
 import com.solana.mobilewalletadapter.clientlib.RpcCluster
 import com.solana.mobilewalletadapter.clientlib.TransactionResult
+import com.solana.networking.HttpNetworkingRouter
+import com.solana.networking.RPCEndpoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.bitcoinj.wallet.Wallet
 import javax.inject.Inject
 
 data class WalletViewState(
@@ -29,9 +36,10 @@ data class WalletViewState(
 
 
 @HiltViewModel
-class WaffleViewModel  @Inject constructor(
+class WaffleViewModel @Inject constructor(
     private val walletAdapter: MobileWalletAdapter,
     private val walletConnectionUseCase: WalletConnectionUseCase,
+    private val waffleUseCase: WaffleUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WalletViewState())
@@ -39,7 +47,11 @@ class WaffleViewModel  @Inject constructor(
     val viewState: StateFlow<WalletViewState>
         get() = _state
 
+    private val _solana = MutableLiveData<Solana>()
+
     init {
+        _solana.value = Solana(HttpNetworkingRouter(RPCEndpoint.devnetSolana))
+
         viewModelScope.launch {
             walletConnectionUseCase.walletDetails
                 .collect { walletDetails ->
@@ -111,6 +123,29 @@ class WaffleViewModel  @Inject constructor(
     fun disconnect() {
         viewModelScope.launch {
             walletConnectionUseCase.clearConnection()
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun incrementCounter(
+        identityUri: Uri,
+        iconUri: Uri,
+        identityName: String,
+        sender: ActivityResultSender,
+        waffle: String
+    ) {
+        println(_state.value.userAddress)
+        viewModelScope.launch {
+            _solana.value?.let { solana ->
+                waffleUseCase.createWaffle(
+                    identityUri,
+                    iconUri,
+                    identityName,
+                    sender,
+                    PublicKey(_state.value.userAddress),
+                    solana,
+                    waffle
+                )
+            }
         }
     }
 }
