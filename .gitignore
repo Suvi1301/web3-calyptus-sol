@@ -28,3 +28,5 @@ android-dapp/local.properties
 waffle-maker/target
 waffle-maker/test-ledger
 waffle-maker/.yarn
+
+trading-bot-phoenix/.env
