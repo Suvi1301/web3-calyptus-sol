@@ -17,6 +17,7 @@
     "dependencies": {
         "@ellipsis-labs/phoenix-sdk": "^2.0.2",
         "@solana/web3.js": "^1.90.0",
+        "dotenv": "^16.4.5",
         "node-fetch": "^3.3.2"
     }
 }
