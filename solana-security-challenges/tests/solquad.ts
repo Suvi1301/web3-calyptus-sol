@@ -20,17 +20,8 @@ describe("solquad", async () => {
     "CzyDhoJqZHfheuFbhu4sW5fXLYYyBAnf6Wrnwy7A4ghd"
   );
 
-  const admin = Keypair.fromSecretKey(
-    Buffer.from(
-      JSON.parse(readFileSync(process.env.USER1_KEYPAIR_PATH, "utf-8"))
-    )
-  );
-
-  const admin2 = Keypair.fromSecretKey(
-    Buffer.from(
-      JSON.parse(readFileSync(process.env.USER2_KEYPAIR_PATH, "utf-8"))
-    )
-  );
+  const admin = anchor.web3.Keypair.generate();
+  const admin2 = anchor.web3.Keypair.generate();
 
   const wallet = new anchor.Wallet(admin);
 
@@ -79,8 +70,10 @@ describe("solquad", async () => {
     program.programId
   );
 
-  airdrop(admin, provider);
-  airdrop(admin2, provider);
+  before(async () => {
+    await airdrop(admin, provider);
+    await airdrop(admin2, provider);
+  });
 
   // Test 1
   it("initializes escrow and pool", async () => {
