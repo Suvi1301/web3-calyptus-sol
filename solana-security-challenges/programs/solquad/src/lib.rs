@@ -41,14 +41,12 @@ pub mod solquad {
         let pool_account = &mut ctx.accounts.pool_account;
         let project_account = &ctx.accounts.project_account;
 
-        pool_account.projects.push(
-            project_account.project_owner
-        );
+        pool_account.projects.push(project_account.project_owner);
         pool_account.total_projects += 1;
 
-        escrow_account.project_reciever_addresses.push(
-            project_account.project_owner
-        );
+        escrow_account
+            .project_reciever_addresses
+            .push(project_account.project_owner);
 
         Ok(())
     }
@@ -73,7 +71,7 @@ pub mod solquad {
         let escrow_account = &mut ctx.accounts.escrow_account;
         let pool_account = &mut ctx.accounts.pool_account;
         let project_account = &mut ctx.accounts.project_account;
-  
+
         for i in 0..escrow_account.project_reciever_addresses.len() {
             let distributable_amt: u64;
             let votes: u64;
@@ -86,7 +84,8 @@ pub mod solquad {
             }
 
             if votes != 0 {
-                distributable_amt = (votes / pool_account.total_votes) * escrow_account.creator_deposit_amount as u64;
+                distributable_amt = (votes / pool_account.total_votes)
+                    * escrow_account.creator_deposit_amount as u64;
             } else {
                 distributable_amt = 0;
             }
@@ -185,7 +184,7 @@ pub struct Escrow {
     pub project_reciever_addresses: Vec<Pubkey>,
 }
 
-// Pool for each project 
+// Pool for each project
 #[account]
 pub struct Pool {
     pub pool_creator: Pubkey,
@@ -209,5 +208,5 @@ pub struct Project {
 pub struct Voter {
     pub voter: Pubkey,
     pub voted_for: Pubkey,
-    pub token_amount: u64
+    pub token_amount: u64,
 }
