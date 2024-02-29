@@ -32,6 +32,7 @@ pub mod solquad {
         project_account.votes_count = 0;
         project_account.voter_amount = 0;
         project_account.distributed_amt = 0;
+        project_account.in_pool = false;
 
         Ok(())
     }
@@ -39,10 +40,19 @@ pub mod solquad {
     pub fn add_project_to_pool(ctx: Context<AddProjectToPool>) -> Result<()> {
         let escrow_account = &mut ctx.accounts.escrow_account;
         let pool_account = &mut ctx.accounts.pool_account;
-        let project_account = &ctx.accounts.project_account;
+        let project_account = &mut ctx.accounts.project_account;
+        require!(
+            project_account.in_pool == false,
+            ErrorCode::ProjectExistsInPool
+        );
+        require!(
+            !pool_account.projects.iter().any(|owner| owner == &project_account.project_owner),
+            ErrorCode::ProjectExistsInPool
+        )
 
         pool_account.projects.push(project_account.project_owner);
         pool_account.total_projects += 1;
+        project_account.in_pool = true;
 
         escrow_account
             .project_reciever_addresses
@@ -84,7 +94,7 @@ pub mod solquad {
             }
 
             if votes != 0 {
-                distributable_amt = (votes / pool_account.total_votes)
+                distributable_amt = votes / pool_account.total_votes)
                     * escrow_account.creator_deposit_amount as u64;
             } else {
                 distributable_amt = 0;
@@ -201,6 +211,7 @@ pub struct Project {
     pub votes_count: u64,
     pub voter_amount: u64,
     pub distributed_amt: u64,
+    pub in_pool: bool,
 }
 
 // Voters voting for the project
@@ -209,4 +220,10 @@ pub struct Voter {
     pub voter: Pubkey,
     pub voted_for: Pubkey,
     pub token_amount: u64,
+}
+
+#[error_code]
+pub enum ErrorCode {
+    #[msg("This project already exists in the pool.")]
+    ProjectExistsInPool,
 }

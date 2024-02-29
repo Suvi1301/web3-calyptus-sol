@@ -187,7 +187,7 @@ describe("solquad", async () => {
 });
 
 async function airdrop(user, provider) {
-  const AIRDROP_AMOUNT = anchor.web3.LAMPORTS_PER_SOL; // 5 SOL
+  const AIRDROP_AMOUNT = 5 * anchor.web3.LAMPORTS_PER_SOL; // 5 SOL
 
   // airdrop to user
   const airdropSignature = await provider.connection.requestAirdrop(
