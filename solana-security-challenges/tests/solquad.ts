@@ -1,22 +1,37 @@
+require("dotenv").config();
+
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import idl from "../target/idl/solquad.json";
 import { Solquad } from "../target/idl/solquad";
+import { Keypair } from "@solana/web3.js";
+import { readFileSync } from "fs";
+import { homedir } from "os";
 
 import { utf8 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { BN } from "bn.js";
 
 describe("solquad", async () => {
   const connection = new anchor.web3.Connection(
-    anchor.web3.clusterApiUrl("devnet"),
+    "http://127.0.0.1:8899",
     "confirmed"
   );
   const programId = new anchor.web3.PublicKey(
-    "3fowu869PY6frqrYPdhtCzsm7j1jgjpr47HyuyMP9xUH"
+    "CzyDhoJqZHfheuFbhu4sW5fXLYYyBAnf6Wrnwy7A4ghd"
   );
 
-  const admin = anchor.web3.Keypair.generate();
-  const admin2 = anchor.web3.Keypair.generate();
+  const admin = Keypair.fromSecretKey(
+    Buffer.from(
+      JSON.parse(readFileSync(process.env.USER1_KEYPAIR_PATH, "utf-8"))
+    )
+  );
+
+  const admin2 = Keypair.fromSecretKey(
+    Buffer.from(
+      JSON.parse(readFileSync(process.env.USER2_KEYPAIR_PATH, "utf-8"))
+    )
+  );
+
   const wallet = new anchor.Wallet(admin);
 
   const provider = new anchor.AnchorProvider(connection, wallet, {});
@@ -199,6 +214,6 @@ async function airdrop(user, provider) {
   });
 
   console.log(
-    `Tx Complete: https://explorer.solana.com/tx/${airdropSignature}?cluster=Localnet`
+    `Tx Complete: https://explorer.solana.com/tx/${airdropSignature}?cluster=localnet`
   );
 }

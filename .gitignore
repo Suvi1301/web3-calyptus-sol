@@ -34,3 +34,4 @@ trading-bot-phoenix/.env
 solana-security-challenges/target
 solana-security-challenges/test-ledger
 solana-security-challenges/.yarn
+solana-security-challenges/.env
