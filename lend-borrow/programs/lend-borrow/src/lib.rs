@@ -17,6 +17,10 @@ pub mod lend_borrow {
     ) -> Result<()> {
         instructions::create_pool::handler(ctx, collection_id, duration)
     }
+
+    pub fn offer_loan(ctx: Context<OfferLoan>, offer_amount: u64) -> Result<()> {
+        instructions::offer_loan::handler(ctx, offer_amount)
+    }
 }
 
 #[derive(Accounts)]
