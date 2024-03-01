@@ -1,38 +1,36 @@
-import { FC } from 'react';
+import { FC } from "react";
 import Link from "next/link";
-import Text from './Text';
-import NavElement from './nav-element';
+import Text from "./Text";
+import NavElement from "./nav-element";
 interface Props {
   children: React.ReactNode;
 }
 
 export const ContentContainer: React.FC<Props> = ({ children }) => {
-
   return (
-    <div className="flex-1 drawer h-52 flex-col justify-between">
-      <input id="my-drawer" type="checkbox" className="grow drawer-toggle" />
-      <div className="items-center drawer-content flex flex-col justify-between">
+    <div className="drawer h-52 flex-1 flex-col justify-between">
+      <input id="my-drawer" type="checkbox" className="drawer-toggle grow" />
+      <div className="drawer-content flex flex-col items-center justify-between">
         {children}
       </div>
       {/* SideBar / Drawer */}
       <div className="drawer-side">
         <label htmlFor="my-drawer" className="drawer-overlay gap-6"></label>
 
-        <ul className="p-4 overflow-y-auto menu w-80 bg-base-100 gap-10 sm:flex items-center">
+        <ul className="menu bg-base-100 w-80 items-center gap-10 overflow-y-auto p-4 sm:flex">
           <li>
-            <Text variant="heading" className='font-extrabold tracking-tighter text-center text-transparent bg-clip-text bg-gradient-to-br  from-[#80ff7d] to-[#80ff7d] mt-10'>Menu</Text>
+            <Text
+              variant="heading"
+              className="mt-10 bg-gradient-to-br from-[#80ff7d] to-[#80ff7d] bg-clip-text text-center  font-extrabold tracking-tighter text-transparent"
+            >
+              Menu
+            </Text>
           </li>
           <li>
-          <NavElement
-            label="Home"
-            href="/"
-          />
+            <NavElement label="Home" href="/" />
           </li>
           <li>
-          <NavElement
-            label="Basics"
-            href="/basics"
-          />
+            <NavElement label="Basics" href="/basics" />
           </li>
         </ul>
       </div>

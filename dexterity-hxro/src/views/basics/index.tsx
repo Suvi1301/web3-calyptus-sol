@@ -1,9 +1,12 @@
-
 import { FC, useEffect, useMemo } from "react";
-import { SelectTraderAccounts } from '../../components/dexterity/SelectTraderAccounts';
+import { SelectTraderAccounts } from "../../components/dexterity/SelectTraderAccounts";
 import { DexterityWallet } from "@hxronetwork/dexterity-ts";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useManifest, useProduct, useTrader } from "contexts/DexterityProviders";
+import {
+  useManifest,
+  useProduct,
+  useTrader,
+} from "contexts/DexterityProviders";
 import { DefaultInfo } from "components/DefaultInfo";
 import { PlaceLimitOrder } from "components/dexterity/LimitOrder";
 import { FundingTrader } from "components/dexterity/FundingTrg";
@@ -14,52 +17,75 @@ import { useNetworkConfiguration } from "contexts/NetworkConfigurationProvider";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { dexterity } from "utils/dexterityTypes";
 
-export const BasicsView: FC = ({ }) => {
-  const { publicKey, signTransaction, signAllTransactions } = useWallet()
-  const { setManifest } = useManifest()
-  const { trader } = useTrader()
-  const { setIndexPrice, setMarkPrice } = useProduct()
+export const BasicsView: FC = ({}) => {
+  const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const { setManifest } = useManifest();
+  const { trader } = useTrader();
+  const { setIndexPrice, setMarkPrice } = useProduct();
   const { networkConfiguration } = useNetworkConfiguration();
   const network = networkConfiguration as WalletAdapterNetwork;
 
   useMemo(async () => {
-    if (!publicKey) return
+    if (!publicKey) return;
     const rpc =
-      network == 'devnet' ? process.env.NEXT_PUBLIC_DEVNET_RPC! :
-        network == 'mainnet-beta' ? process.env.NEXT_PUBLIC_MAINNET_RPC! :
-          clusterApiUrl(network)
+      network == "devnet"
+        ? process.env.NEXT_PUBLIC_DEVNET_RPC!
+        : network == "mainnet-beta"
+          ? process.env.NEXT_PUBLIC_MAINNET_RPC!
+          : clusterApiUrl(network);
 
-    // Fetch for the Manifest
+    // Constructing DexterityWallet from the Solana Wallet Adapter
+    const wallet: DexterityWallet = {
+      publicKey: publicKey!,
+      signTransaction,
+      signAllTransactions,
+    };
 
+    // Fecth the Manifest
+    /*
+    // When working with the Dexterity SDK, you’ll need to know and have access to all
+    // the pubkeys for the on-chain programs and accounts that form Dexterity, these are
+    // a lot of accounts, but the good news is that you can easily get these by fetching
+    // and initiating the manifest class which abstracts most of the complexity of dealing
+    // with Dexterity.
+    */
+    const manifest = await dexterity.getManifest(rpc, true, wallet);
+
+    // Set Manifest with Global Context
+    setManifest(manifest);
   }, [publicKey, network]);
 
-  useEffect(() => { }, [trader, setIndexPrice, setMarkPrice])
+  useEffect(() => {}, [trader, setIndexPrice, setMarkPrice]);
 
   return (
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
-        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br  from-[#80ff7d] to-[#80ff7d] mt-10 mb-8">
+        <h1 className="mb-8 mt-10 bg-gradient-to-br from-[#80ff7d] to-[#80ff7d] bg-clip-text  text-center text-5xl font-bold text-transparent">
           Basics
         </h1>
         <div className="text-center">
           <DefaultInfo />
           <SelectTraderAccounts />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-4">
-              <div className="col-span-1 md:col-span-1 lg:col-span-1">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <PlaceLimitOrder />
-                  </div>
-                  <div>
-                  <FundingTrader />
-                  </div>
+          <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-2">
+            <div className="col-span-1 md:col-span-1 lg:col-span-1">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                  <PlaceLimitOrder />
                 </div>
-                <div className="mt-4"><OpenOrders /></div>
+                <div>
+                  <FundingTrader />
+                </div>
               </div>
-              <div className="col-span-1 md:col-span-1 lg:col-span-1 gap-4">
-                <div className="mt-4"><AccountInfo /></div>
+              <div className="mt-4">
+                <OpenOrders />
               </div>
             </div>
+            <div className="col-span-1 gap-4 md:col-span-1 lg:col-span-1">
+              <div className="mt-4">
+                <AccountInfo />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

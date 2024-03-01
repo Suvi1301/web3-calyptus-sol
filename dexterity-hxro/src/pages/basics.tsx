@@ -7,10 +7,7 @@ const Basics: NextPage = (props) => {
     <div>
       <Head>
         <title>Hxro Scaffold</title>
-        <meta
-          name="description"
-          content="Basic Functionality"
-        />
+        <meta name="description" content="Basic Functionality" />
       </Head>
       <BasicsView />
     </div>
