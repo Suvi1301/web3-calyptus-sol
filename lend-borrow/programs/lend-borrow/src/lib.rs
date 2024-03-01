@@ -34,6 +34,10 @@ pub mod lend_borrow {
     pub fn borrow(ctx: Context<Borrow>, minimum_balance_for_rent_exemption: u64) -> Result<()> {
         instructions::borrow::handler(ctx, minimum_balance_for_rent_exemption)
     }
+
+    pub fn repay(ctx: Context<Repay>) -> Result<()> {
+        instructions::repay::handler(ctx)
+    }
 }
 
 #[derive(Accounts)]
