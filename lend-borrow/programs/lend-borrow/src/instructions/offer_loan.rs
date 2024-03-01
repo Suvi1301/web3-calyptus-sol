@@ -70,12 +70,12 @@ pub fn handler(ctx: Context<OfferLoan>, offer_amount: u64) -> Result<()> {
     offer_account.offer_lamport_amount = offer_amount;
     offer_account.repay_lamport_amount = offer_amount + offer_amount * 10 / 100;
     offer_account.lender = ctx.accounts.lender.key();
-    offer_account.bump = *ctx.bumps.get("offer_loan").unwrap();
+    offer_account.bump = ctx.bumps.offer_loan;
 
     collection.total_offers += 1;
 
     vault.offer = offer_account.key();
-    vault.bump = *ctx.bumps.get("vault_account").unwrap();
+    vault.bump = ctx.bumps.vault_account;
 
     system_program::transfer(ctx.accounts.transfer_to_vault_context(), offer_amount)?;
 
