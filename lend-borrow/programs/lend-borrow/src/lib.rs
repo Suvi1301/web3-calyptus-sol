@@ -30,6 +30,10 @@ pub mod lend_borrow {
     ) -> Result<()> {
         instructions::withdraw_offer::handler(ctx, minimum_balance_for_rent_exemption)
     }
+
+    pub fn borrow(ctx: Context<Borrow>, minimum_balance_for_rent_exemption: u64) -> Result<()> {
+        instructions::borrow::handler(ctx, minimum_balance_for_rent_exemption)
+    }
 }
 
 #[derive(Accounts)]
