@@ -38,3 +38,7 @@ solana-security-challenges/.env
 
 dexterity-hxro/.next/*
 dexterity-hxro/.env
+
+lend-borrow/target
+lend-borrow/test-ledger
+lend-borrow/.yarn
