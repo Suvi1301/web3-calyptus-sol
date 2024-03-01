@@ -24,10 +24,27 @@ export const AccountInfo: FC = () => {
     if (!trader) return;
 
     // Fetch & Update Trader Account information
+    const cashBalance = trader.getCashBalance().toDecimal();
+    const portfolioValue = trader.getPortfolioValue().toDecimal();
+    const orderData = Array.from(
+      await Promise.all(trader.getOpenOrders([selectedProduct.name])),
+    );
+
+    setCashBalance(cashBalance);
+    setPortfolioValue(portfolioValue);
+    setOrderData(orderData);
+
+    setUpdated(true);
+    setLastUpdated(Date.now());
   }, [trader, selectedProduct]); // Removed markPrice and indexPrice
 
   useEffect(() => {
     // Stream Trader Account Information
+    trader.connect(updateAccountInfo, updateAccountInfo);
+
+    return () => {
+      trader.disconnect();
+    };
   }, [updateAccountInfo]);
 
   return (
