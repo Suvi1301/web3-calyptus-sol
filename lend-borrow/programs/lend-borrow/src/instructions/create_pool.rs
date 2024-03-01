@@ -2,15 +2,16 @@ use anchor_lang::prelude::*;
 
 use crate::states::CollectionPool;
 
+/// init: initialise the collection pool account
+/// we need only one collection pool to be created per NFT collection,
+/// that’s why we add collection_id in the seeds, so that we can link this
+/// collection pool account to a particular NFT collection, since a
+/// specific combination of seeds will always derive the same program address.
 #[derive(Accounts)]
 #[instruction(collection_id: Pubkey)]
 pub struct CreatePool<'info> {
     #[account(
-        init, // initialise the collection pool account
-        /// we need only one collection pool to be created per NFT collection,
-        /// that’s why we add collection_id in the seeds, so that we can link this
-        /// collection pool account to a particular NFT collection, since a
-        /// specific combination of seeds will always derive the same program address.
+        init,
         seeds=[b"collection-pool", collection_id.key().as_ref()],
         bump,
         payer=authority, // account responsible to pay rent to store the account on chain
@@ -34,7 +35,7 @@ pub fn handler(ctx: Context<CreatePool>, collection_id: Pubkey, duration: i64) -
     collection.pool_owner = ctx.accounts.authority.key();
     collection.duration = duration;
     collection.total_offers = 0;
-    collection.bump = *ctx.bumps.get("collection_pool").unwrap();
+    collection.bump = ctx.bumps.collection_pool;
 
     Ok(())
 }
