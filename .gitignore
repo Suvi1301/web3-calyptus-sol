@@ -173,3 +173,7 @@ telegram-bot/trades-webhook/dmypy.json
 
 # Pyre type checker
 telegram-bot/trades-webhook/.pyre/
+
+telegram-bot/dexterity-bot/.env*
+telegram-bot/dexterity-bot/node_modules
+telegram-bot/dexterity-bot/.vscode
