@@ -4,11 +4,14 @@ skip-lint = false
 [programs.localnet]
 lend_borrow = "bpuPFSHXB4e8CAy1akbNH64XmBdBfzFH977x18Jng6f"
 
+[programs.devnet]
+nft_lend_borrow = "bpuPFSHXB4e8CAy1akbNH64XmBdBfzFH977x18Jng6f"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "/Users/suvineetkalsi/.config/solana/id.json"
 
 [scripts]
