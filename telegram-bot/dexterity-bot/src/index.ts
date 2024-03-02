@@ -4,12 +4,23 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import {
   handleCancelSubscription,
   handleNewSubscription,
-} from "./api-utils/subscritionHandler";
+} from "./api-utils/subscriptionHandler";
 import { tradeHandler } from "./api-utils/tradeHandler";
 
 const AppState = new Map<string, any>();
 
 export const app = async () => {
+
+  const keypair = Keypair.fromSecretKey(new Uint8Array([...]));
+  const wallet = new Wallet(keypair);
+
+  const rpc = `https://devnet-rpc.shyft.to?api_key=UKj6NdXcBwMrJtqA`;
+
+  const manifest = await dexterity.getManifest(rpc, true, wallet);
+
+  const trg = new PublicKey("CG7BmZh3PJR1oS7iYzd2D8Ca9g7itG5TYcZPUYqeZwXs");
+  const trader = new dexterity.Trader(manifest, trg);
+
 
   const server = Bun.serve({
     async fetch(req, server) {
@@ -24,8 +35,10 @@ export const app = async () => {
         case "/process-trade":
           break;
         case "/new-subscription":
+          response = await handleNewSubscription(trader, manifest, searchParams.get("trg"), AppState)
           break;
         case "/cancel-subscription":
+          response = await handleCancelSubscription(AppState);
           break;
         default:
           break;
